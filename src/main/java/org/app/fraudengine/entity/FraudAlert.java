@@ -14,6 +14,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class FraudAlert {
 
+    // Primary key for the FraudAlert entity
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

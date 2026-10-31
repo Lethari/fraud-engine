@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 @Component
 public class HighAmountRule implements FraudRule {
 
+    // Define the maximum allowed amounts for different transaction types
     private static final BigDecimal ONLINE_PURCHASE_LIMIT =
             new BigDecimal("20000");
 
@@ -23,7 +24,7 @@ public class HighAmountRule implements FraudRule {
 
         BigDecimal limit;
 
-        //Switch statement checks transaction type
+        // Determine the limit based on the transaction type
         switch (transaction.getTransactionType()) {
 
             case ONLINE_PURCHASE:
@@ -42,7 +43,7 @@ public class HighAmountRule implements FraudRule {
                 return false;
         }
 
-        //User transaction amount/type gets compared and evaluates
+        // Check if the transaction amount exceeds the limit
         return transaction.getAmount().compareTo(limit) > 0;
     }
 

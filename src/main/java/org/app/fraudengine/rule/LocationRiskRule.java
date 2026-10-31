@@ -8,6 +8,7 @@ import java.util.Map;
 @Component
 public class LocationRiskRule implements FraudRule {
 
+    // Define risk levels for different countries
     private final Map<String, RiskLevel> countryRiskLevels = Map.of(
             "COUNTRY_A", RiskLevel.HIGH,
             "COUNTRY_B", RiskLevel.MEDIUM,
@@ -28,6 +29,7 @@ public class LocationRiskRule implements FraudRule {
         return riskLevel == RiskLevel.HIGH;
     }
 
+    // Enum to represent different risk levels
     @Override
     public String getRuleName() {
         return "LOCATION_RISK";

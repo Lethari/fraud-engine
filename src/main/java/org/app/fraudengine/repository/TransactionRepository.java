@@ -8,6 +8,7 @@ import java.util.List;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
+    // Custom query method to find transactions by customer ID and a date range
     List<Transaction> findByCustomerIdAndTransactionDateTimeBetween(
             String customerID,
             LocalDateTime start,

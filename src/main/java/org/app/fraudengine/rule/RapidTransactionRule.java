@@ -29,6 +29,7 @@ public class RapidTransactionRule implements FraudRule {
                 TIME_WINDOW_MINUTES
         );
 
+        // Count the number of transactions for the same client within the time window
         long transactionCount = transactionRepository
                 .findByCustomerIdAndTransactionDateTimeBetween(
                         transaction.getCustomerId(),
