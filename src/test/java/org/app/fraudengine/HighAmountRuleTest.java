@@ -3,13 +3,13 @@ package org.app.fraudengine;
 import org.app.fraudengine.entity.Transaction;
 import org.app.fraudengine.entity.TransactionType;
 import org.app.fraudengine.rule.HighAmountRule;
-import org.junit.jupiter.api.Test;
+
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 
 import java.math.BigDecimal;
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class HighAmountRuleTest {
     private HighAmountRule rule;
@@ -21,54 +21,55 @@ public class HighAmountRuleTest {
         transaction = new Transaction();
     }
 
-    //boundary testing at or around the threshold limit
-    @Test
+    @ParameterizedTest
+    @CsvSource({
+            "25000,true",
+            "30000,true",
+            "15000, false",
+            "20000, false"
+    })
     void
-    shouldFlagOnlinePurchaseAboveThresholdId() {
+   shouldEvaluateOnlinePurchaseAmounts(
+           String amount, boolean expectedResult) {
+
         transaction.setTransactionType(TransactionType.ONLINE_PURCHASE);
-        transaction.setAmount(new BigDecimal("25000"));
+        transaction.setAmount(new BigDecimal(amount));
 
-        boolean result = rule.evaluate(transaction);
-               assertTrue(result);
+        assertEquals(expectedResult, rule.evaluate(transaction));
     }
-    @Test
-    void
-    shouldNotFlagOnlinePurchaseBelowThresholdId() {
-        transaction.setTransactionType(TransactionType.ONLINE_PURCHASE);
-        transaction.setAmount(new BigDecimal("13000"));
 
-        assertFalse(rule.evaluate(transaction));
-    }
-    @Test
+    @ParameterizedTest
+    @CsvSource({
+            "12000, true",
+            "15000, true",
+            "8000, false",
+            "10000, false",
+    })
     void
-    shouldFlagCashWithdrawalAboveThresholdId() {
+    shouldEvaluateCashWithdrawalAmounts(
+            String amount, boolean expectedResult) {
+
         transaction.setTransactionType(TransactionType.CASH_WITHDRAWAL);
-        transaction.setAmount(new BigDecimal("12000"));
+        transaction.setAmount(new BigDecimal(amount));
 
-        assertTrue(rule.evaluate(transaction));
+        assertEquals(expectedResult, rule.evaluate(transaction));
     }
-    @Test
-    void
-    shouldNotFlagCashWithdrawalBelowThresholdId() {
-        transaction.setTransactionType(TransactionType.CASH_WITHDRAWAL);
-        transaction.setAmount(new BigDecimal("10000"));
 
-        assertFalse(rule.evaluate(transaction));
-    }
-    @Test
+    @ParameterizedTest
+    @CsvSource({
+            "35000, true",
+            "40000, true",
+            "20000, false",
+            "30000, false",
+    })
     void
-    shouldFlagMoneyTransferAboveThresholdId() {
+    shouldEvaluateMoneyTransferAmounts(
+            String amount, boolean expectedResult) {
+
         transaction.setTransactionType(TransactionType.MONEY_TRANSFER);
-        transaction.setAmount(new BigDecimal("35500"));
+        transaction.setAmount(new BigDecimal(amount));
 
-        assertTrue(rule.evaluate(transaction));
-    }
-    @Test
-    void
-    shouldNotFlagMoneyTransferBelowThresholdId() {
-        transaction.setTransactionType(TransactionType.MONEY_TRANSFER);
-        transaction.setAmount(new BigDecimal("20000"));
 
-        assertFalse(rule.evaluate(transaction));
+        assertEquals(expectedResult, rule.evaluate(transaction));
     }
 }
