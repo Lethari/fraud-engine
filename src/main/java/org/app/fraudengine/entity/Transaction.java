@@ -30,7 +30,7 @@ public class Transaction {
     precision = 19, scale = 2)
     private BigDecimal amount;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 3)
     private String currency;
 
     @Column(nullable = false)
@@ -39,7 +39,7 @@ public class Transaction {
     @Column(nullable = false)
     private String location;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 100)
     private String country;
 
     @Column(nullable = false)
