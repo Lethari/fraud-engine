@@ -1,0 +1,3 @@
+ALTER TABLE fraud_alerts
+ADD COLUMN risk_score INT NOT NULL
+DEFAULT 0;

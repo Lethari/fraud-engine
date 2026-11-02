@@ -1,5 +1,6 @@
 package org.app.fraudengine.rule;
 
+import org.app.fraudengine.entity.RiskLevel;
 import org.app.fraudengine.entity.Transaction;
 import org.springframework.stereotype.Component;
 

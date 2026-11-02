@@ -33,6 +33,9 @@ public class FraudAlert {
     private String severity;
 
     @Column(nullable = false)
+    private int riskScore;
+
+    @Column(nullable = false)
     private LocalDateTime detectedAt;
 
     @Column(nullable = false)

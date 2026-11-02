@@ -1,4 +1,4 @@
-package org.app.fraudengine.rule;
+package org.app.fraudengine.entity;
 
 public enum RiskLevel {
     HIGH,
