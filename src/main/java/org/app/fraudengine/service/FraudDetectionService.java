@@ -7,16 +7,22 @@ import org.app.fraudengine.repository.TransactionRepository;
 import org.app.fraudengine.repository.FraudAlertRepository;
 import org.app.fraudengine.rule.FraudRule;
 import org.springframework.stereotype.Service;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.Optional;
+
 
 
 
 @Service
 public class FraudDetectionService {
+
+    private static final Set<String>ALLOWED_STATUSES = Set.of("OPEN" , "INVESTIGATING" , "CLOSED");
 
     private final List<FraudRule> fraudRules;
     private final TransactionRepository transactionRepository;
@@ -25,6 +31,7 @@ public class FraudDetectionService {
 
     // Constructor
     public FraudDetectionService(
+
             List<FraudRule> fraudRules,
             TransactionRepository transactionRepository,
             FraudAlertRepository fraudAlertRepository,
@@ -90,11 +97,15 @@ public class FraudDetectionService {
 
     public FraudAlert updateFraudAlertStatus(Long alertId, String status) {
 
+        //Validate status first
+        if(!ALLOWED_STATUSES.contains(status.toUpperCase())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid fraud alert status: " + status);
+        }
         FraudAlert fraudAlert = fraudAlertRepository.findById(alertId)
                 .orElseThrow(() -> new RuntimeException(
                         "Fraud alert not found with ID: " + alertId));
 
-        fraudAlert.setStatus(status);
+        fraudAlert.setStatus(status.toUpperCase());
         return fraudAlertRepository.save(fraudAlert);
     }
 }
