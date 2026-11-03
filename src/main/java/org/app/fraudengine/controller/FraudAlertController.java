@@ -2,8 +2,12 @@ package org.app.fraudengine.controller;
 
 import org.app.fraudengine.entity.FraudAlert;
 import org.app.fraudengine.service.FraudAlertService;
+import org.app.fraudengine.service.FraudDetectionService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -12,9 +16,11 @@ import java.util.List;
 public class FraudAlertController {
 
     private final FraudAlertService fraudAlertService;
+    private final FraudDetectionService fraudDetectionService;
 
-    public FraudAlertController(FraudAlertService fraudAlertService) {
+    public FraudAlertController(FraudAlertService fraudAlertService, FraudDetectionService fraudDetectionService) {
         this.fraudAlertService = fraudAlertService;
+        this.fraudDetectionService = fraudDetectionService;
     }
 
     //Retrieve all fraud alerts
@@ -28,5 +34,18 @@ public class FraudAlertController {
         return fraudAlertService.getFraudAlertById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @GetMapping("/customer/{customerId}")
+    public  List<FraudAlert>getFraudAlertsByCustomerId(@PathVariable String customerId) {
+        return fraudAlertService.getFraudAlertByCustomerId(customerId);
+    }
+
+    @PutMapping("/{alertId}/status")
+    public ResponseEntity<FraudAlert>updateFraudAlertStatus(
+                @PathVariable Long alertId, @RequestParam String status) {
+
+        FraudAlert updatedAlert = fraudDetectionService.updateFraudAlertStatus(alertId, status);
+        return ResponseEntity.ok(updatedAlert);
     }
 }

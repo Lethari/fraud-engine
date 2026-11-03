@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 
@@ -85,5 +86,15 @@ public class FraudDetectionService {
         Transaction savedTransaction = transactionRepository.save(transaction);
 
         return evaluateTransaction(savedTransaction);
+    }
+
+    public FraudAlert updateFraudAlertStatus(Long alertId, String status) {
+
+        FraudAlert fraudAlert = fraudAlertRepository.findById(alertId)
+                .orElseThrow(() -> new RuntimeException(
+                        "Fraud alert not found with ID: " + alertId));
+
+        fraudAlert.setStatus(status);
+        return fraudAlertRepository.save(fraudAlert);
     }
 }

@@ -25,4 +25,9 @@ public class FraudAlertService {
     public Optional<FraudAlert>getFraudAlertById(Long id) {
         return fraudAlertRepository.findById(id);
     }
+
+    //Retrieve fraud alerts for a customer
+    public List<FraudAlert>getFraudAlertByCustomerId(String customerId) {
+        return fraudAlertRepository.findByTransactionCustomerId(customerId);
+    }
 }

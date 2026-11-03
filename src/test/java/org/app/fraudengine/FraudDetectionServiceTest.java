@@ -87,7 +87,7 @@ class FraudDetectionServiceTest {
 
             @Override
             public String getRuleName() {
-                return "RAPID_TRANSACTION";
+                return "RAPID_TRANSACTIONS";
             }
         };
 
