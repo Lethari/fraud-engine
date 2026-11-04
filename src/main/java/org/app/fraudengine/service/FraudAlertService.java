@@ -2,6 +2,8 @@ package org.app.fraudengine.service;
 
 import org.app.fraudengine.entity.FraudAlert;
 import org.app.fraudengine.repository.FraudAlertRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,5 +36,10 @@ public class FraudAlertService {
     //Retrieve/Filter fraud alert by status
     public List<FraudAlert>getFraudAlertByStatus(String status) {
         return fraudAlertRepository.findByStatus(status);
+    }
+
+    //Allow to handle large dataset by requesting page and no. of records
+    public Page<FraudAlert>getFraudAlerts(Pageable pageable) {
+        return fraudAlertRepository.findAll(pageable);
     }
 }
