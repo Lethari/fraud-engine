@@ -10,8 +10,10 @@ import org.app.fraudengine.entity.FraudAlert;
 import org.app.fraudengine.repository.TransactionRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -119,5 +121,36 @@ class FraudDetectionServiceTest {
 
         //Both alerts should have HIGH severity
         assertEquals("HIGH", savedAlerts.get(1).getSeverity());
+    }
+
+    @Test
+    void shouldAcceptValidFraudAlertStatus() {
+
+        FraudAlertRepository fraudAlertRepository = mock(FraudAlertRepository.class);
+        FraudDetectionService service = new FraudDetectionService(List.of(),mock(TransactionRepository.class),
+                fraudAlertRepository, new RiskScoringService());
+        FraudAlert fraudAlert = new FraudAlert();
+
+        when (fraudAlertRepository.findById(1L))
+                .thenReturn(java.util.Optional.of(fraudAlert));
+
+        when (fraudAlertRepository.save(any(FraudAlert.class)))
+                .thenReturn(fraudAlert);
+        FraudAlert updatedAlert = service.updateFraudAlertStatus(1L, "INVESTIGATING");
+
+        assertEquals("INVESTIGATING", updatedAlert.getStatus());
+        verify(fraudAlertRepository).save(fraudAlert);
+    }
+
+    @Test
+    void shouldRejectInvalidFraudAlertStatus() {
+
+        FraudAlertRepository fraudAlertRepository = mock(FraudAlertRepository.class);
+        FraudDetectionService service = new FraudDetectionService(List.of(), mock(TransactionRepository.class),
+                        fraudAlertRepository, new RiskScoringService());
+
+        assertThrows(ResponseStatusException.class, () ->
+                service.updateFraudAlertStatus(1L, "PENDING"));
+        verify(fraudAlertRepository, never()).save(any(FraudAlert.class));
     }
 }
