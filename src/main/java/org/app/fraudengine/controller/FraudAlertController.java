@@ -63,13 +63,20 @@ public class FraudAlertController {
         List<FraudAlert> alerts = fraudAlertService.getFraudAlertByStatus(status);
         return ResponseEntity.ok(alerts);
     }
-    //Exposure by requesting a specific page of fraud alerts
+
+    //Returns a page of fraud alerts sorted by a specified field
     @GetMapping("/page")
     public ResponseEntity<Page<FraudAlert>> getFraudAlertsPaginated(
             @PageableDefault(size = 10, sort = "id") Pageable pageable) {
 
         Page<FraudAlert> alerts = fraudAlertService.getFraudAlerts(pageable);
+        return ResponseEntity.ok(alerts);
+    }
 
+    //Returns alerts matching HIGH, MEDIUM, LOW
+    @GetMapping("/severity/{severity}")
+    public ResponseEntity<List<FraudAlert>> getFraudAlertsBySeverity(@PathVariable String severity) {
+        List<FraudAlert> alerts = fraudAlertService.getFraudAlertsBySeverity(severity);
         return ResponseEntity.ok(alerts);
     }
 }

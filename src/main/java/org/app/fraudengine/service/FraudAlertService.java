@@ -42,4 +42,9 @@ public class FraudAlertService {
     public Page<FraudAlert>getFraudAlerts(Pageable pageable) {
         return fraudAlertRepository.findAll(pageable);
     }
+
+    //Allows filtering by severity: HIGH, MEDIUM, LOW
+    public List<FraudAlert>getFraudAlertsBySeverity(String severity) {
+        return fraudAlertRepository.findBySeverity(severity);
+    }
 }
