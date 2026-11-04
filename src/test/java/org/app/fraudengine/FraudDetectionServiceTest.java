@@ -11,12 +11,10 @@ import org.app.fraudengine.repository.TransactionRepository;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
-
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+
+import java.util.List;
 
 class FraudDetectionServiceTest {
 
