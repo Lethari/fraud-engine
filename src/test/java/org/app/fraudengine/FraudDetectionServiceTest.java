@@ -126,6 +126,7 @@ class FraudDetectionServiceTest {
     @Test
     void shouldAcceptValidFraudAlertStatus() {
 
+        //Accepts only : OPEN, INVESTIGATING and CLOSED as status updates
         FraudAlertRepository fraudAlertRepository = mock(FraudAlertRepository.class);
         FraudDetectionService service = new FraudDetectionService(List.of(),mock(TransactionRepository.class),
                 fraudAlertRepository, new RiskScoringService());
@@ -145,6 +146,7 @@ class FraudDetectionServiceTest {
     @Test
     void shouldRejectInvalidFraudAlertStatus() {
 
+        //Reject any status different from: OPEN, INVESTIGATING and CLOSED
         FraudAlertRepository fraudAlertRepository = mock(FraudAlertRepository.class);
         FraudDetectionService service = new FraudDetectionService(List.of(), mock(TransactionRepository.class),
                         fraudAlertRepository, new RiskScoringService());

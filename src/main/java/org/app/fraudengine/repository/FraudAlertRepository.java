@@ -7,4 +7,5 @@ import java.util.List;
 
 public interface FraudAlertRepository extends JpaRepository<FraudAlert, Long> {
     List<FraudAlert>findByTransactionCustomerId(String customerId);
+    List<FraudAlert>findByStatus(String status);
 }

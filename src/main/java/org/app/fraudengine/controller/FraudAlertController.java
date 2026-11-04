@@ -42,10 +42,15 @@ public class FraudAlertController {
     }
 
     @PutMapping("/{alertId}/status")
-    public ResponseEntity<FraudAlert>updateFraudAlertStatus(
-                @PathVariable Long alertId, @RequestParam String status) {
+    public ResponseEntity<FraudAlert>updateFraudAlertStatus(@PathVariable Long alertId, @RequestParam String status) {
 
         FraudAlert updatedAlert = fraudDetectionService.updateFraudAlertStatus(alertId, status);
         return ResponseEntity.ok(updatedAlert);
+    }
+
+    @GetMapping("/status/{status}")
+    public ResponseEntity<List<FraudAlert>>getFraudAlertsByStatus(@PathVariable String status) {
+        List<FraudAlert> alerts = fraudAlertService.getFraudAlertByStatus(status);
+        return ResponseEntity.ok(alerts);
     }
 }

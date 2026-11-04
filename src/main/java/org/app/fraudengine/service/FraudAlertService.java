@@ -30,4 +30,9 @@ public class FraudAlertService {
     public List<FraudAlert>getFraudAlertByCustomerId(String customerId) {
         return fraudAlertRepository.findByTransactionCustomerId(customerId);
     }
+
+    //Retrieve/Filter fraud alert by status
+    public List<FraudAlert>getFraudAlertByStatus(String status) {
+        return fraudAlertRepository.findByStatus(status);
+    }
 }
