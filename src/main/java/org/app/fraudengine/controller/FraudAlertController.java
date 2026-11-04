@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.time.LocalDateTime;
 
 @RestController
 @RequestMapping("/api/fraud_alerts")
@@ -66,7 +68,7 @@ public class FraudAlertController {
 
     //Returns a page of fraud alerts sorted by a specified field
     @GetMapping("/page")
-    public ResponseEntity<Page<FraudAlert>> getFraudAlertsPaginated(
+    public ResponseEntity<Page<FraudAlert>>getFraudAlertsPaginated(
             @PageableDefault(size = 10, sort = "id") Pageable pageable) {
 
         Page<FraudAlert> alerts = fraudAlertService.getFraudAlerts(pageable);
@@ -75,8 +77,16 @@ public class FraudAlertController {
 
     //Returns alerts matching HIGH, MEDIUM, LOW
     @GetMapping("/severity/{severity}")
-    public ResponseEntity<List<FraudAlert>> getFraudAlertsBySeverity(@PathVariable String severity) {
+    public ResponseEntity<List<FraudAlert>>getFraudAlertsBySeverity(@PathVariable String severity) {
         List<FraudAlert> alerts = fraudAlertService.getFraudAlertsBySeverity(severity);
         return ResponseEntity.ok(alerts);
+    }
+
+    //Allows investigators to filter alerts by detection period
+    @GetMapping("/date-range")
+    public ResponseEntity<List<FraudAlert>>getFraudAlertsByDateRange(
+            @RequestParam LocalDateTime start, LocalDateTime end) {
+        List<FraudAlert> alerts = fraudAlertService.getFraudAlertsByDateRange(start, end);
+            return ResponseEntity.ok(alerts);
     }
 }

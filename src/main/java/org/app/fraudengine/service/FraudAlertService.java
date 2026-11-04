@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,5 +47,10 @@ public class FraudAlertService {
     //Allows filtering by severity: HIGH, MEDIUM, LOW
     public List<FraudAlert>getFraudAlertsBySeverity(String severity) {
         return fraudAlertRepository.findBySeverity(severity);
+    }
+
+    //Allows filtering by passing a specific date frame
+    public List<FraudAlert>getFraudAlertsByDateRange(LocalDateTime start, LocalDateTime end) {
+        return fraudAlertRepository.findByDetectedAtBetween(start, end);
     }
 }
