@@ -1,7 +1,6 @@
 package org.app.fraudengine.rule;
 
 import org.app.fraudengine.entity.Transaction;
-import org.app.fraudengine.entity.TransactionType;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
