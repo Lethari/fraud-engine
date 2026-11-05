@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.app.fraudengine.dto.FraudAlertStatistics;
 
 import java.util.List;
 import java.time.LocalDateTime;
@@ -70,7 +69,7 @@ public class FraudAlertController {
     //Returns a page of fraud alerts sorted by a specified field
     @GetMapping("/page")
     public ResponseEntity<Page<FraudAlert>>getFraudAlertsPaginated(
-            @PageableDefault(size = 10, sort = "id") Pageable pageable) {
+            @PageableDefault(sort = "id") Pageable pageable) {
 
         Page<FraudAlert> alerts = fraudAlertService.getFraudAlerts(pageable);
         return ResponseEntity.ok(alerts);

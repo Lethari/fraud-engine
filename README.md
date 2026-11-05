@@ -108,7 +108,7 @@ GET      `/api/transactions/customer/
 
 ### Run Tests
 - Execute the following command from the project root directory:
-`mvn cean test'
+`mvn clean test`
 
 ### API Testing
 API endpoints can be tested using:

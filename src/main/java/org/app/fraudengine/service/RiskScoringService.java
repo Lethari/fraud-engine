@@ -33,7 +33,7 @@ public class RiskScoringService {
                     score += 30;
                     break;
 
-                case "LOCATION_RISK":
+                case "LOCATION_RISK": //separated from merging(HIGH_AMOUNT) for future updates
                     score += 40;
                     break;
 
