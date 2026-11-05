@@ -11,4 +11,6 @@ public interface FraudAlertRepository extends JpaRepository<FraudAlert, Long> {
     List<FraudAlert>findByStatus(String status);
     List<FraudAlert>findBySeverity(String severity);
     List<FraudAlert>findByDetectedAtBetween(LocalDateTime start, LocalDateTime end);
+    long countBySeverity(String severity);
+    long countByStatus(String status);
 }

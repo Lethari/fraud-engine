@@ -1,5 +1,6 @@
 package org.app.fraudengine.controller;
 
+import org.app.fraudengine.dto.FraudAlertStatistics;
 import org.app.fraudengine.entity.FraudAlert;
 import org.app.fraudengine.service.FraudAlertService;
 import org.app.fraudengine.service.FraudDetectionService;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.app.fraudengine.dto.FraudAlertStatistics;
 
 import java.util.List;
 import java.time.LocalDateTime;
@@ -87,5 +89,11 @@ public class FraudAlertController {
             @RequestParam LocalDateTime start, LocalDateTime end) {
         List<FraudAlert> alerts = fraudAlertService.getFraudAlertsByDateRange(start, end);
             return ResponseEntity.ok(alerts);
+    }
+
+    @GetMapping("/statistics")
+    public ResponseEntity<FraudAlertStatistics>getFraudAlertStatistics() {
+        FraudAlertStatistics statistics = fraudAlertService.getFraudAlertStatistics();
+        return ResponseEntity.ok(statistics);
     }
 }

@@ -5,6 +5,7 @@ import org.app.fraudengine.repository.FraudAlertRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.app.fraudengine.dto.FraudAlertStatistics;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -52,5 +53,35 @@ public class FraudAlertService {
     //Allows filtering by passing a specific date frame
     public List<FraudAlert>getFraudAlertsByDateRange(LocalDateTime start, LocalDateTime end) {
         return fraudAlertRepository.findByDetectedAtBetween(start, end);
+    }
+
+    //Assists with statistic dashboard reporting
+    public long getTotalFraudAlertsBySeverity(String severity) {
+        return fraudAlertRepository.countBySeverity(severity);
+    }
+    public long getTotalFraudAlertsByStatus(String status) {
+        return fraudAlertRepository.countByStatus(status);
+    }
+
+    public FraudAlertStatistics getFraudAlertStatistics() {
+
+        FraudAlertStatistics statistics = new FraudAlertStatistics();
+        statistics.setTotalAlerts(fraudAlertRepository.count());
+
+        statistics.setHighSeverity(getTotalFraudAlertsBySeverity("HIGH"));
+
+        statistics.setMediumSeverity(getTotalFraudAlertsBySeverity("MEDIUM"));
+
+        statistics.setLowSeverity(getTotalFraudAlertsBySeverity("LOW"));
+
+        statistics.setOpenAlerts(getTotalFraudAlertsByStatus("OPEN"));
+
+        statistics.setInvestigatingAlerts(getTotalFraudAlertsByStatus("INVESTIGATING"));
+
+        statistics.setClosedAlerts(getTotalFraudAlertsByStatus("CLOSED"));
+
+        statistics.setRejectedAlerts(getTotalFraudAlertsByStatus("REJECTED"));
+
+        return statistics;
     }
 }
