@@ -5,10 +5,7 @@ import org.app.fraudengine.dto.TransactionRequest;
 import org.springframework.http.ResponseEntity;
 import org.app.fraudengine.entity.Transaction;
 import org.app.fraudengine.service.FraudDetectionService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
@@ -45,6 +42,13 @@ public class TransactionController {
                 fraudDetectionService.saveAndEvaluateTransaction(transaction);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(triggeredRules);
+    }
+
+    //Retrieves all transactions belonging to a specific customer
+    @GetMapping("/customer/{customerId}/history")
+    public ResponseEntity<List<Transaction>> getCustomerTransactionHistory(@PathVariable String customerId) {
+        List<Transaction> transactions =fraudDetectionService.getCustomerTransactionHistory(customerId);
+        return ResponseEntity.ok(transactions);
     }
 }
 

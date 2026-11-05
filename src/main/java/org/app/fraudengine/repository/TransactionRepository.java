@@ -14,4 +14,7 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
             LocalDateTime start,
             LocalDateTime end
     );
+
+    //Retrieves all transactions belonging to a customer
+    List<Transaction>findByCustomerId(String customerId);
 }

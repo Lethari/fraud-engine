@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -103,5 +104,10 @@ public class FraudDetectionService {
 
         fraudAlert.setStatus(status.toUpperCase());
         return fraudAlertRepository.save(fraudAlert);
+    }
+
+    //Retrieves all transactions for a particular customer
+    public List<Transaction>getCustomerTransactionHistory(String customerId) {
+        return transactionRepository.findByCustomerId(customerId);
     }
 }
